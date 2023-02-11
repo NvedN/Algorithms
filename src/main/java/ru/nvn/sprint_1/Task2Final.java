@@ -78,8 +78,8 @@ public class Task2Final {
   /**
    * Method for Finding a Winner in the Speed Typing Simulator Game
    *
-   * @param keysNumber {@code BufferedReader}
-   * @param matrix {@code BufferedReader}
+   * @param keysNumber {@code BufferedReader}  Number of keys that can be pressed at one time
+   * @param matrix {@code BufferedReader} Matrix for the Simulator for high-speed typing
    * @return returns int value that indicates the score in the game
    * @author NVN
    * @since sprint 1
