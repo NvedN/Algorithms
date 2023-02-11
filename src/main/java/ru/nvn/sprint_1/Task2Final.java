@@ -22,9 +22,9 @@ public class Task2Final {
    */
   public static void main(String[] args) throws IOException {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-      int rowsCount = readInt(reader);
+      int keysNumber = readInt(reader);
       List<List<String>> matrix = readMatrix(reader);
-      System.out.println(trainer(rowsCount, matrix));
+      System.out.println(trainer(keysNumber, matrix));
     }
   }
 
@@ -78,18 +78,18 @@ public class Task2Final {
   /**
    * Method for Finding a Winner in the Speed Typing Simulator Game
    *
-   * @param number {@code BufferedReader}
+   * @param keysNumber {@code BufferedReader}
    * @param matrix {@code BufferedReader}
    * @return returns int value that indicates the score in the game
    * @author NVN
    * @since sprint 1
    */
-  public static Integer trainer(Integer number, List<List<String>> matrix) {
+  public static Integer trainer(Integer keysNumber, List<List<String>> matrix) {
 
     int scores = 0;
-    Map<String, Integer> numbers = new HashMap<>();
+    Map<String, Integer> numbersMap = new HashMap<>();
     for (int KeyNum = 1; KeyNum < 10; KeyNum++) {
-      numbers.put(String.valueOf(KeyNum), 0);
+      numbersMap.put(String.valueOf(KeyNum), 0);
     }
     for (int matrixLineNum = 0; matrixLineNum < 4; matrixLineNum++) {
       List<String> matrixValues = matrix.get(matrixLineNum);
@@ -97,14 +97,14 @@ public class Task2Final {
         if (matrixValueNum.equals(".")) {
           continue;
         }
-        int tmpValue = numbers.get(matrixValueNum);
+        int tmpValue = numbersMap.get(matrixValueNum);
         tmpValue++;
-        numbers.replace(matrixValueNum, tmpValue);
+        numbersMap.replace(matrixValueNum, tmpValue);
       }
     }
-    for (String key : numbers.keySet()) {
-      Integer value = numbers.get(key);
-      if (value > 0 && value <= number * 2) {
+    for (String key : numbersMap.keySet()) {
+      Integer value = numbersMap.get(key);
+      if (value > 0 && value <= keysNumber * 2) {
         scores += 1;
       }
     }

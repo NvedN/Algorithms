@@ -19,7 +19,7 @@ public class Task1Final {
    * @author NVN
    * @since sprint 1
    */
-  public static int[] findZero(int[] input) {
+  public static int[] findNearestZero(int[] input) {
     int[] zeroBefore = new int[input.length];
     int[] zeroAfter = new int[input.length];
     int[] result = new int[input.length];
@@ -50,8 +50,8 @@ public class Task1Final {
   public static void main(String[] args) throws IOException {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
       int streetLength = readInt(reader);
-      int[] b = readListArray(reader, streetLength);
-      System.out.println(Arrays.toString(findZero(b)).replace(",", "")
+      int[] b = readArray(reader, streetLength);
+      System.out.println(Arrays.toString(findNearestZero(b)).replace(",", "")
           .replace("[", "")
           .replace("]", ""));
     }
@@ -79,12 +79,12 @@ public class Task1Final {
    * @author NVN
    * @since sprint 1
    */
-  private static int[] readListArray(BufferedReader reader, int streetLength) throws IOException {
-    int[] a = new int[streetLength];
+  private static int[] readArray(BufferedReader reader, int streetLength) throws IOException {
+    int[] output = new int[streetLength];
     List<String> lineArray = List.of(reader.readLine().trim().split("\\s+"));
     for (int i = 0; i < lineArray.size() && i < streetLength; i++) {
-      a[i] = Integer.parseInt(lineArray.get(i));
+      output[i] = Integer.parseInt(lineArray.get(i));
     }
-    return a;
+    return output;
   }
 }
