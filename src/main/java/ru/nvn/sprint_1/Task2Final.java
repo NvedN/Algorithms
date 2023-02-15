@@ -1,4 +1,4 @@
-// ID успешной посылки 82027135
+// https://contest.yandex.ru/contest/22450/run-report/82337022/
 
 package ru.nvn.sprint_1;
 
@@ -6,9 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Task2Final {
 
@@ -52,7 +50,7 @@ public class Task2Final {
    */
   private static List<String> readList(BufferedReader reader) throws IOException {
 
-    String line = reader.readLine();
+    String line = reader.readLine().replace(".", "0");
     return new ArrayList<>(List.of(line.split("")));
   }
 
@@ -79,7 +77,7 @@ public class Task2Final {
    * Method for Finding a Winner in the Speed Typing Simulator Game
    *
    * @param keysNumber {@code BufferedReader}  Number of keys that can be pressed at one time
-   * @param matrix {@code BufferedReader} Matrix for the Simulator for high-speed typing
+   * @param matrix     {@code BufferedReader} Matrix for the Simulator for high-speed typing
    * @return returns int value that indicates the score in the game
    * @author NVN
    * @since sprint 1
@@ -87,23 +85,15 @@ public class Task2Final {
   public static Integer trainer(Integer keysNumber, List<List<String>> matrix) {
 
     int scores = 0;
-    Map<String, Integer> numbersMap = new HashMap<>();
-    for (int KeyNum = 1; KeyNum < 10; KeyNum++) {
-      numbersMap.put(String.valueOf(KeyNum), 0);
-    }
+    int[] numbersArray = new int[10];
     for (int matrixLineNum = 0; matrixLineNum < 4; matrixLineNum++) {
       List<String> matrixValues = matrix.get(matrixLineNum);
-      for (String matrixValueNum : matrixValues) {
-        if (matrixValueNum.equals(".")) {
-          continue;
-        }
-        int tmpValue = numbersMap.get(matrixValueNum);
-        tmpValue++;
-        numbersMap.replace(matrixValueNum, tmpValue);
+      for (String value : matrixValues) {
+        numbersArray[Integer.parseInt(value)] += 1;
       }
     }
-    for (String key : numbersMap.keySet()) {
-      Integer value = numbersMap.get(key);
+    for (int arrayNum = 1; arrayNum < numbersArray.length; arrayNum++) {
+      int value = numbersArray[arrayNum];
       if (value > 0 && value <= keysNumber * 2) {
         scores += 1;
       }

@@ -1,4 +1,4 @@
-// ID успешной посылки 82027234
+// https://contest.yandex.ru/contest/22450/run-report/82336432/
 
 package ru.nvn.sprint_1;
 
@@ -15,28 +15,31 @@ public class Task1Final {
    * Method to find the nearest zero in array for each element
    *
    * @param input {@code int[]} int array with home numbers
-   * @return an array with each element counted up to the nearest zero
    * @author NVN
    * @since sprint 1
    */
-  public static int[] findNearestZero(int[] input) {
-    int[] zeroBefore = new int[input.length];
-    int[] zeroAfter = new int[input.length];
+  public static void findNearestZero(int[] input) {
+
     int[] result = new int[input.length];
-    for (int i = 0; i < input.length; i++) {
-      zeroBefore[i] = input[i] == 0 ? 0 : input.length;
-      zeroAfter[i] = input[i] == 0 ? 0 : input.length;
+    int counter = input.length;
+    for (int i = 0; i < result.length; i++) {
+      if (input[i] == 0) {
+        counter = 0;
+      }
+      result[i] = counter;
+      counter++;
     }
-    for (int i = 1; i < input.length; i++) {
-      zeroBefore[i] = input[i] == 0 ? 0 : zeroBefore[i - 1] + 1;
+    counter = input.length;
+    for (int i = input.length - 1; i >= 0; i--) {
+      if (input[i] == 0) {
+        counter = 0;
+      }
+      result[i] = Math.min(result[i], counter);
+      counter++;
     }
-    for (int i = input.length - 2; i >= 0; i--) {
-      zeroAfter[i] = input[i] == 0 ? 0 : zeroAfter[i + 1] + 1;
-    }
-    for (int i = 0; i < input.length; i++) {
-      result[i] = Math.min(zeroBefore[i], zeroAfter[i]);
-    }
-    return result;
+    System.out.print(Arrays.toString(result).replaceAll(",", "")
+        .replace("[", "")
+        .replace("]", ""));
   }
 
   /**
@@ -51,9 +54,7 @@ public class Task1Final {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
       int streetLength = readInt(reader);
       int[] b = readArray(reader, streetLength);
-      System.out.println(Arrays.toString(findNearestZero(b)).replace(",", "")
-          .replace("[", "")
-          .replace("]", ""));
+      findNearestZero(b);
     }
   }
 
