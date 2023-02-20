@@ -87,13 +87,20 @@ public class finalTaskA {
         cb.pushFront(Integer.parseInt(sp[1]));
       }
       if (command.contains("pop_front")) {
-        cb.popFront();
+        printPopOperation(cb.popFront());
       }
       if (command.contains("pop_back")) {
-        cb.popBack();
+        printPopOperation(cb.popBack());
       }
     }
   }
+
+  public static void printPopOperation(int value) {
+    if (value != -1) {
+      System.out.println(value);
+    }
+  }
+
 
   public static class Deque {
 
@@ -143,35 +150,37 @@ public class finalTaskA {
     /**
      * Deletes an item from the front of Deque.  Return 'error' if deque is empty.
      */
-    public void popFront() {
+    public int popFront() {
       if (isEmpty()) {
         System.out.println("error");
-        return;
+        return -1;
       }
-      System.out.println(dq[head]);
+      int returnObject = dq[head];
       head = (head + 1) % dq.length;
       size--;
       if (isEmpty()) {
         head = -1;
         tail = -1;
       }
+      return returnObject;
     }
 
     /**
      * Deletes an item from the rear of Deque. Return 'error' if deque is empty.
      */
-    public void popBack() {
+    public int popBack() {
       if (isEmpty()) {
         System.out.println("error");
-        return;
+        return -1;
       }
-      System.out.println(dq[tail]);
+      int returnObject = dq[tail];
       tail = (tail + dq.length - 1) % dq.length;
       size--;
       if (isEmpty()) {
         head = -1;
         tail = -1;
       }
+      return returnObject;
     }
 
 
