@@ -1,4 +1,4 @@
-// https://contest.yandex.ru/contest/23815/run-report/83357719/
+// https://contest.yandex.ru/contest/23815/run-report/83417574/
 
 package ru.nvn.sprint_3;
 
@@ -49,9 +49,12 @@ public class QuickSortFinal2 {
    *
    * <p>-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ -- Пространственная сложность данного решения составляет O(n),
    * т.е. пространство, необходимое для хранения входного массива и дополнительных переменных,
-   * используемых в процессе сортировки.
+   * используемых в процессе сортировки. Дополнительная пространственная сложность алгоритма быстрой
+   * сортировки равна O(log n), где n - размер сортируемого массива. Это связано с тем, что во время
+   * выполнения алгоритма требуется хранить в памяти стек вызовов рекурсивных вызовов функций
+   * быстрой сортировки.
    */
-  static class Contestant {
+  static class Contestant implements Comparable<Contestant> {
     String name;
     int problemsSolved;
     int penalty;
@@ -61,6 +64,17 @@ public class QuickSortFinal2 {
       this.problemsSolved = problemsSolved;
       this.penalty = penalty;
     }
+
+    @Override
+    public int compareTo(Contestant other) {
+      if (this.problemsSolved != other.problemsSolved) {
+        return Integer.compare(other.problemsSolved, this.problemsSolved);
+      } else if (this.penalty != other.penalty) {
+        return Integer.compare(this.penalty, other.penalty);
+      } else {
+        return this.name.compareTo(other.name);
+      }
+    }
   }
 
   static void swap(Contestant[] contestants, int i, int j) {
@@ -69,29 +83,24 @@ public class QuickSortFinal2 {
     contestants[j] = tmp;
   }
 
-  static int partition(Contestant[] contestants, int lo, int hi) {
-    Contestant pivot = contestants[hi];
-    int i = lo;
-    for (int j = lo; j < hi; j++) {
-      if (contestants[j].problemsSolved > pivot.problemsSolved
-          || (contestants[j].problemsSolved == pivot.problemsSolved
-              && contestants[j].penalty < pivot.penalty)
-          || (contestants[j].problemsSolved == pivot.problemsSolved
-              && contestants[j].penalty == pivot.penalty
-              && contestants[j].name.compareTo(pivot.name) < 0)) {
-        swap(contestants, i, j);
+  static int partition(Contestant[] contestants, int left, int right) {
+    Contestant pivot = contestants[right];
+    int i = left - 1;
+    for (int j = left; j < right; j++) {
+      if (contestants[j].compareTo(pivot) < 0) {
         i++;
+        swap(contestants, i, j);
       }
     }
-    swap(contestants, i, hi);
-    return i;
+    swap(contestants, i + 1, right);
+    return i + 1;
   }
 
-  static void quicksort(Contestant[] contestants, int lo, int hi) {
-    if (lo < hi) {
-      int p = partition(contestants, lo, hi);
-      quicksort(contestants, lo, p - 1);
-      quicksort(contestants, p + 1, hi);
+  static void quicksort(Contestant[] contestants, int left, int right) {
+    if (left < right) {
+      int p = partition(contestants, left, right);
+      quicksort(contestants, left, p - 1);
+      quicksort(contestants, p + 1, right);
     }
   }
 
