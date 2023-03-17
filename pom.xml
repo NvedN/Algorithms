@@ -14,4 +14,17 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx</artifactId>
+      <version>11</version>
+      <type>pom</type>
+    </dependency>
+
+  </dependencies>
+
+
 </project>
