@@ -1,54 +1,104 @@
+// https://contest.yandex.ru/contest/24414/run-report/84152471/
+
 package ru.nvn.sprint_4;
 
+import java.io.*;
 import java.util.*;
 
 public class FinalA {
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
 
-    int n = scanner.nextInt(); // количество документов
-    scanner.nextLine();
-
-    Map<String, List<Integer>> index = new HashMap<>(); // поисковый индекс
-    for (int i = 1; i <= n; i++) {
-      String document = scanner.nextLine();
-      String[] words = document.split(" ");
-
-      for (String word : words) {
-        List<Integer> documents = index.getOrDefault(word, new ArrayList<>());
-        documents.add(i);
-        index.put(word, documents);
-      }
-    }
-    int m = scanner.nextInt(); // количество запросов
-    scanner.nextLine();
-
+  /**
+   * -- ПРИНЦИП РАБОТЫ --Данный код реализует простую поисковую систему. Принцип работы состоит из
+   * трех основных шагов:
+   *
+   * <p>Строится обратный индекс - для каждого слова из документов, в котором оно встречается,
+   * записывается, в каких документах это слово встречается и сколько раз.
+   *
+   * <p>При поступлении запроса, он разбивается на слова, для каждого слова ищутся документы, в
+   * которых оно встречается, и на основе этой информации определяется релевантность каждого
+   * документа.
+   *
+   * <p>Отобранные документы сортируются по релевантности и выводятся на экран.
+   *
+   * <p>-- ДОКАЗАТЕЛЬСТВО КОРРЕКТНОСТИ -- Для каждого слова в обратном индексе хранится список
+   * документов, в которых оно встречается. Каждый документ имеет свой уникальный идентификатор. Для
+   * каждого документа в релевантности хранится суммарное количество вхождений всех слов из запроса
+   * в этот документ. Поэтому, если документ имеет высокую релевантность, то это значит, что он
+   * содержит много слов из запроса и они встречаются в нем много раз.
+   *
+   * <p>-- ВРЕМЕННАЯ СЛОЖНОСТЬ -- Временная сложность данного алгоритма зависит от размера входных
+   * данных и количества запросов. Построение обратного индекса занимает O(n * d * w) времени, где n
+   * - количество документов, d - средняя длина документа и w - среднее количество слов в документе.
+   * Обработка запроса занимает O(q * d * w) времени, где q - количество запросов. Сложность
+   * сортировки документов по релевантности равна O(d * log(d)), где d - количество документов.
+   * Таким образом, общая временная сложность составляет O(n * d * w + q * d * w + d * log(d)).
+   *
+   * <p>-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ -- Пространственная сложность алгоритма зависит от размера
+   * обратного индекса. В нашем случае он занимает O(n * d * w) памяти.
+   */
+  public static void main(String[] args) throws IOException {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+    int n = Integer.parseInt(reader.readLine()); // количество документов
+    Map<String, HashMap<Integer, Integer>> index = buildIndex(n, reader);
+    int m = Integer.parseInt(reader.readLine()); // количество запросов
     for (int i = 0; i < m; i++) {
-      String query = scanner.nextLine();
-      String[] words = query.split(" ");
-      Map<Integer, Integer> relevance = new HashMap<>(); // релевантность документов
-      HashSet<String> uniqWords = new HashSet<>();
-      for (String word : words) {
-        if (index.containsKey(word) && !uniqWords.contains(word)) {
-          for (Integer document : index.get(word)) {
-            int score = relevance.getOrDefault(document, 0);
-            relevance.put(document, score + 1);
-          }
-        }
-        uniqWords.add(word);
-      }
-      List<Integer> docIds = new ArrayList<>(relevance.keySet());
-      docIds.sort(
-          (a, b) -> {
-            int scoreDiff = relevance.get(b) - relevance.get(a);
-            return scoreDiff == 0 ? a - b : scoreDiff;
+      String query = reader.readLine();
+      HashSet<String> uniqWordsFromQuery = new HashSet<>(List.of(query.split(" ")));
+      List<Integer> topDocIds = getTopDocuments(uniqWordsFromQuery, index);
+      topDocIds.forEach(
+          doc -> {
+            try {
+              writer.write(doc + " ");
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
           });
-      List<Integer> topDocIds = docIds.subList(0, Math.min(5, docIds.size()));
-      StringBuilder result = new StringBuilder();
-      for (int docId : topDocIds) {
-        result.append(docId).append(" ");
-      }
-      System.out.println(result.toString().trim());
+      writer.newLine();
     }
+    reader.close();
+    writer.close();
+  }
+
+  private static Map<String, HashMap<Integer, Integer>> buildIndex(int n, BufferedReader reader)
+      throws IOException {
+    Map<String, HashMap<Integer, Integer>> index = new HashMap<>();
+    for (int i = 1; i <= n; i++) {
+      String document = reader.readLine();
+      String[] words = document.split(" ");
+      for (String word : words) {
+        HashMap<Integer, Integer> documentsNew = index.getOrDefault(word, new HashMap<>());
+        int count = documentsNew.get(i) != null ? documentsNew.get(i) : 0;
+        count++;
+        documentsNew.put(i, count);
+        index.put(word, documentsNew);
+      }
+    }
+
+    return index;
+  }
+
+  private static List<Integer> getTopDocuments(
+      HashSet<String> uniqWordsFromQuery, Map<String, HashMap<Integer, Integer>> index) {
+    Map<Integer, Integer> relevance = new HashMap<>();
+    for (String word : uniqWordsFromQuery) {
+      if (index.containsKey(word)) {
+        for (Integer document : index.get(word).keySet()) {
+          int score = index.get(word).get(document);
+
+          if (relevance.containsKey(document)) {
+            score += relevance.get(document);
+          }
+          relevance.put(document, score);
+        }
+      }
+    }
+    List<Integer> docIds = new ArrayList<>(relevance.keySet());
+    docIds.sort(
+        (a, b) -> {
+          int scoreDiff = relevance.get(b) - relevance.get(a);
+          return scoreDiff == 0 ? a - b : scoreDiff;
+        });
+    return docIds.subList(0, Math.min(5, docIds.size()));
   }
 }
