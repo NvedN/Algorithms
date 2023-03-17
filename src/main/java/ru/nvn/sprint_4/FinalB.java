@@ -1,18 +1,34 @@
+// https://contest.yandex.ru/contest/24414/run-report/84122369/
+
 package ru.nvn.sprint_4;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FinalB {
+  /**
+   * -- ПРИНЦИП РАБОТЫ -- Данный код реализует структуру данных хэш-таблица, которая представляет
+   * собой массив списков. Каждый элемент хэш-таблицы хранит ключ и значение. Операции добавления,
+   * получения и удаления элементов в хэш-таблице выполняются за константное время в среднем случае,
+   * благодаря эффективной хэш-функции, которая распределяет ключи элементов по ячейкам массива.
+   *
+   * <p>-- ДОКАЗАТЕЛЬСТВО КОРРЕКТНОСТИ -- алгоритма заключается в том, что все операции добавления,
+   * поиска и удаления элементов выполняются за константное время в среднем случае, что гарантирует
+   * хэш-таблица.
+   *
+   * <p>-- ВРЕМЕННАЯ СЛОЖНОСТЬ -- данного алгоритма в худшем случае равна O(n), где n - количество
+   * операций, которые нужно выполнить. Это происходит в случае, когда все операции добавления,
+   * поиска и удаления элементов выполняются на одном и том же хэш-бакете, что может произойти при
+   * плохом хэшировании. В среднем же время выполнения каждой операции составляет O(1).
+   *
+   * <p>-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ -- данного алгоритма равна O(m), где m - количество элементов,
+   * которые были добавлены в хэш-таблицу. Это связано с тем, что каждый элемент занимает место в
+   * списке, который хранится в соответствующем хэш-бакете.
+   */
   public static void main(String[] args) throws IOException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     int n = Integer.parseInt(reader.readLine());
     HashTable hashTable = new HashTable(1_000_000);
     for (int i = 0; i < n; i++) {
@@ -27,21 +43,24 @@ public class FinalB {
         case "get":
           int returnGetValue = hashTable.get(key);
           if (returnGetValue == -1) {
-            System.out.println("None");
+            writer.write("None\n");
           } else {
-            System.out.println(returnGetValue);
+            writer.write(returnGetValue + "\n");
           }
           break;
         case "delete":
           int returnDeleteValue = hashTable.delete(key);
           if (returnDeleteValue == -1) {
-            System.out.println("None");
+            writer.write("None\n");
           } else {
-            System.out.println(returnDeleteValue);
+            writer.write(returnDeleteValue + "\n");
           }
           break;
       }
     }
+    writer.flush();
+    writer.close();
+    reader.close();
   }
 
   public static class HashTable {
