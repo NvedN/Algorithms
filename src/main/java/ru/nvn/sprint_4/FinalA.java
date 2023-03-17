@@ -20,7 +20,6 @@ public class FinalA {
         index.put(word, documents);
       }
     }
-
     int m = scanner.nextInt(); // количество запросов
     scanner.nextLine();
 
@@ -28,42 +27,28 @@ public class FinalA {
       String query = scanner.nextLine();
       String[] words = query.split(" ");
       Map<Integer, Integer> relevance = new HashMap<>(); // релевантность документов
-
+      HashSet<String> uniqWords = new HashSet<>();
       for (String word : words) {
-        if (index.containsKey(word)) {
+        if (index.containsKey(word) && !uniqWords.contains(word)) {
           for (Integer document : index.get(word)) {
             int score = relevance.getOrDefault(document, 0);
             relevance.put(document, score + 1);
           }
         }
+        uniqWords.add(word);
       }
-      System.out.println("----------relevance = " + relevance);
-
-      List<Map.Entry<Integer, Integer>> relevanceList = new ArrayList<>(relevance.entrySet());
-      relevanceList.sort(
+      List<Integer> docIds = new ArrayList<>(relevance.keySet());
+      docIds.sort(
           (a, b) -> {
-            int cmp = a.getValue().compareTo(b.getValue());
-            if (cmp == 0) {
-              return b.getKey().compareTo(a.getKey());
-            }
-            return cmp;
+            int scoreDiff = relevance.get(b) - relevance.get(a);
+            return scoreDiff == 0 ? a - b : scoreDiff;
           });
-
-      System.out.println("----------relevanceList = " + relevanceList);
-
-      List<Integer> topDocuments = new ArrayList<>();
-      for (int j = 0; j < 5 && j < relevanceList.size(); j++) {
-        int document = relevanceList.get(j).getKey();
-        int score = relevanceList.get(j).getValue();
-        if (score > 0) {
-          topDocuments.add(document);
-        }
+      List<Integer> topDocIds = docIds.subList(0, Math.min(5, docIds.size()));
+      StringBuilder result = new StringBuilder();
+      for (int docId : topDocIds) {
+        result.append(docId).append(" ");
       }
-
-      for (int document : topDocuments) {
-        System.out.print(document + " ");
-      }
-      System.out.println();
+      System.out.println(result.toString().trim());
     }
   }
 }
