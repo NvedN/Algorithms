@@ -1,4 +1,4 @@
-// https://contest.yandex.ru/contest/24414/run-report/84122369/
+// https://contest.yandex.ru/contest/24414/run-report/84201607/
 
 package ru.nvn.sprint_4;
 
@@ -30,7 +30,7 @@ public class FinalB {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     int n = Integer.parseInt(reader.readLine());
-    HashTable hashTable = new HashTable(1_000_000);
+    HashTable hashTable = new HashTable(n);
     for (int i = 0; i < n; i++) {
       String[] parts = reader.readLine().split("\\s");
       String operation = parts[0];
@@ -77,17 +77,24 @@ public class FinalB {
       }
     }
 
-    HashTable(int size) {
-      this.size = size;
+    HashTable(int capacity) {
+      if (capacity <= 10) {
+        capacity = 10;
+      }
+      size = capacity / 10;
       table = new ArrayList[size];
     }
 
     private int hash(int key) {
-      return Math.abs(key) % size;
+      return Integer.hashCode(Math.abs(key));
+    }
+
+    private int getBucketIndex(int key) {
+      return hash(key) % size;
     }
 
     void put(int key, int value) {
-      int h = hash(key);
+      int h = getBucketIndex(key);
       if (table[h] == null) {
         table[h] = new ArrayList<>();
       }
@@ -101,7 +108,7 @@ public class FinalB {
     }
 
     int get(int key) {
-      int h = hash(key);
+      int h = getBucketIndex(key);
       if (table[h] == null) {
         return -1;
       }
@@ -114,7 +121,7 @@ public class FinalB {
     }
 
     int delete(int key) {
-      int h = hash(key);
+      int h = getBucketIndex(key);
       if (table[h] == null) {
         return -1;
       }

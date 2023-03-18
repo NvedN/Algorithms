@@ -1,4 +1,4 @@
-// https://contest.yandex.ru/contest/24414/run-report/84152471/
+// https://contest.yandex.ru/contest/24414/run-report/84199521/
 
 package ru.nvn.sprint_4;
 
@@ -96,8 +96,8 @@ public class FinalA {
     List<Integer> docIds = new ArrayList<>(relevance.keySet());
     docIds.sort(
         (a, b) -> {
-          int scoreDiff = relevance.get(b) - relevance.get(a);
-          return scoreDiff == 0 ? a - b : scoreDiff;
+          int scoreDiff = Integer.compare(relevance.get(b), relevance.get(a));
+          return scoreDiff == 0 ? Integer.compare(a, b) : scoreDiff;
         });
     return docIds.subList(0, Math.min(5, docIds.size()));
   }
