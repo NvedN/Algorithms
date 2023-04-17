@@ -1,4 +1,4 @@
-//https://contest.yandex.ru/contest/24810/run-report/85924450/
+//https://contest.yandex.ru/contest/24810/run-report/85924884/
 
 package ru.nvn.sprint_5;
 
@@ -87,33 +87,33 @@ public class FinalA {
     participants[i] = participants[j];
     participants[j] = temp;
   }
-}
 
-class Participant implements Comparable<Participant> {
-  private String login;
-  private int solved;
-  private int penalty;
+  static class Participant implements Comparable<Participant> {
+    private String login;
+    private int solved;
+    private int penalty;
 
-  public Participant(String login, int solved, int penalty) {
-    this.login = login;
-    this.solved = solved;
-    this.penalty = penalty;
-  }
-
-  public String getLogin() {
-    return login;
-  }
-
-  @Override
-  public int compareTo(Participant o) {
-    if (this.solved != o.solved) {
-      return Integer.compare(o.solved, this.solved);
+    public Participant(String login, int solved, int penalty) {
+      this.login = login;
+      this.solved = solved;
+      this.penalty = penalty;
     }
 
-    if (this.penalty != o.penalty) {
-      return Integer.compare(this.penalty, o.penalty);
+    public String getLogin() {
+      return login;
     }
 
-    return this.login.compareTo(o.login);
+    @Override
+    public int compareTo(Participant o) {
+      if (this.solved != o.solved) {
+        return Integer.compare(o.solved, this.solved);
+      }
+
+      if (this.penalty != o.penalty) {
+        return Integer.compare(this.penalty, o.penalty);
+      }
+
+      return this.login.compareTo(o.login);
+    }
   }
 }
