@@ -1,4 +1,4 @@
-//https://contest.yandex.ru/contest/24810/run-report/85924884/
+//https://contest.yandex.ru/contest/24810/run-report/86068618/
 
 package ru.nvn.sprint_5;
 
@@ -64,23 +64,29 @@ public class FinalA {
   }
 
   private static void maxHeapify(Participant[] participants, int i, int heapSize) {
-    int l = 2 * i + 1;
-    int r = 2 * i + 2;
     int largest = i;
 
-    if (l < heapSize && participants[l].compareTo(participants[largest]) > 0) {
-      largest = l;
-    }
+    while (true) {
+      int l = 2 * i + 1;
+      int r = 2 * i + 2;
 
-    if (r < heapSize && participants[r].compareTo(participants[largest]) > 0) {
-      largest = r;
-    }
+      if (l < heapSize && participants[l].compareTo(participants[largest]) > 0) {
+        largest = l;
+      }
 
-    if (largest != i) {
+      if (r < heapSize && participants[r].compareTo(participants[largest]) > 0) {
+        largest = r;
+      }
+
+      if (largest == i) {
+        break;
+      }
+
       swap(participants, i, largest);
-      maxHeapify(participants, largest, heapSize);
+      i = largest;
     }
   }
+
 
   private static void swap(Participant[] participants, int i, int j) {
     Participant temp = participants[i];
