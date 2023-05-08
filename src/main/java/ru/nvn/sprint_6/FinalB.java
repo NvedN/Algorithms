@@ -1,4 +1,4 @@
-//https://contest.yandex.ru/contest/25070/run-report/86896357/
+//https://contest.yandex.ru/contest/25070/run-report/87060520/
 
 package ru.nvn.sprint_6;
 
@@ -36,10 +36,10 @@ public class FinalB {
    * <p>-- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --O(V+E), так как используется массив цветов для вершин, стек
    * и списки смежности.
    */
-  private static final int WHITE = 0;
+  private enum Color {
+    WHITE, GRAY, BLACK;
+  }
 
-  private static final int GRAY = 1;
-  private static final int BLACK = 2;
   private static final char WIDE_ROAD = 'B';
   private static final char NARROW_ROAD = 'R';
 
@@ -68,9 +68,9 @@ public class FinalB {
   }
 
   private static boolean isCyclic(List<List<Integer>> adjacency) {
-    int[] colors = new int[adjacency.size()];
+    Color[] colors = new Color[adjacency.size()];
     for (int i = 0; i < adjacency.size(); i++) {
-      if (colors[i] == WHITE) {
+      if (colors[i] == null) {
         if (dfsIsCyclic(i, adjacency, colors)) {
           return true;
         }
@@ -79,25 +79,25 @@ public class FinalB {
     return false;
   }
 
-  private static boolean dfsIsCyclic(int startVertex, List<List<Integer>> adjacency, int[] colors) {
+  private static boolean dfsIsCyclic(int startVertex, List<List<Integer>> adjacency, Color[] colors) {
     Stack<Integer> stack = new Stack<>();
     stack.push(startVertex);
 
     while (!stack.empty()) {
       int v = stack.pop();
-      if (colors[v] == WHITE) {
-        colors[v] = GRAY;
+      if (colors[v] == null) {
+        colors[v] = Color.GRAY;
         stack.push(v);
 
         for (int w : adjacency.get(v)) {
-          if (colors[w] == WHITE) {
+          if (colors[w] == null) {
             stack.push(w);
-          } else if (colors[w] == GRAY) {
+          } else if (colors[w] == Color.GRAY) {
             return true;
           }
         }
-      } else if (colors[v] == GRAY) {
-        colors[v] = BLACK;
+      } else if (colors[v] == Color.GRAY) {
+        colors[v] = Color.BLACK;
       }
     }
 
