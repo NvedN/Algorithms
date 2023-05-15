@@ -3,28 +3,31 @@ package ru.nvn.sprint_7;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class A {
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        int n = Integer.parseInt(reader.readLine());
-        String[] pricesStr = reader.readLine().split(" ");
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
         int[] prices = new int[n];
         for (int i = 0; i < n; i++) {
-            prices[i] = Integer.parseInt(pricesStr[i]);
+            prices[i] = scanner.nextInt();
         }
-
-        int profit = 0;
-        int minPrice = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            if (prices[i] < minPrice) {
-                minPrice = prices[i];
-            } else if (prices[i] - minPrice > profit) {
-                profit = prices[i] - minPrice;
+        int maxProfit = 0;
+        int i = 0;
+        while (i < n - 1) {
+            while (i < n - 1 && prices[i] >= prices[i + 1]) {
+                i++;
             }
+            int buyPrice = prices[i];
+            i++;
+            while (i < n && prices[i] > prices[i - 1]) {
+                i++;
+            }
+            int sellPrice = prices[i - 1];
+            maxProfit += sellPrice - buyPrice;
         }
-
-        System.out.println(profit);
+        System.out.println(maxProfit);
     }
+
 }
