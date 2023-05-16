@@ -56,7 +56,7 @@ public class FinalA {
 
       int maxWeight = findMaxWeight(n, edges);
       if (maxWeight == -1) {
-        writer.write("Oops! I did it again");
+        writer.write("Oops! L did it again");
       } else {
         writer.write(String.format("%d", maxWeight));
       }
