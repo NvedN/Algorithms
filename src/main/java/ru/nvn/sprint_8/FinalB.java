@@ -1,4 +1,4 @@
-// https://contest.yandex.ru/contest/26133/run-report/87396204/
+//https://contest.yandex.ru/contest/26133/run-report/87433724/
 
 package ru.nvn.sprint_8;
 
@@ -36,33 +36,25 @@ public class FinalB {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     String string = reader.readLine();
     int n = Integer.parseInt(reader.readLine());
-    String[] words = new String[n];
+    Node root = new Node();
     for (int i = 0; i < n; i++) {
-      words[i] = reader.readLine();
+      String word = reader.readLine();
+      Node node = root;
+      for (int j = 0; j < word.length(); j++) {
+        char c = word.charAt(j);
+        node.next.putIfAbsent(c, new Node());
+        node = node.next.get(c);
+      }
+      node.terminal = true;
     }
-    boolean result = isSplitWords(string, words);
+    boolean result = isSplitWords(string, root);
     writer.write(result ? "YES" : "NO");
     writer.newLine();
     reader.close();
     writer.close();
   }
 
-  public static Node createTree(String[] words) {
-    Node root = new Node("");
-    for (String word : words) {
-      Node node = root;
-      for (int i = 0; i < word.length(); i++) {
-        char c = word.charAt(i);
-        node.next.putIfAbsent(c, new Node(String.valueOf(c)));
-        node = node.next.get(c);
-      }
-      node.terminal = true;
-    }
-    return root;
-  }
-
-  public static boolean isSplitWords(String string, String[] words) {
-    Node root = createTree(words);
+  public static boolean isSplitWords(String string, Node root) {
     boolean[] dp = new boolean[string.length() + 1];
     dp[0] = true;
     for (int i = 0; i < string.length(); i++) {
@@ -83,18 +75,16 @@ public class FinalB {
   }
 
   public static class Node {
-    String value;
     HashMap<Character, Node> next;
     boolean terminal;
 
-    public Node(String value, HashMap<Character, Node> next, boolean terminal) {
-      this.value = value;
+    public Node(HashMap<Character, Node> next, boolean terminal) {
       this.next = next;
       this.terminal = terminal;
     }
 
-    public Node(String value) {
-      this(value, new HashMap<>(), false);
+    public Node() {
+      this(new HashMap<>(), false);
     }
   }
 }

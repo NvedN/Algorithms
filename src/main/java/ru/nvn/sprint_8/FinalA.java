@@ -1,12 +1,9 @@
-// https://contest.yandex.ru/contest/26133/run-report/87395509/
+//https://contest.yandex.ru/contest/26133/run-report/87433254/
 
 package ru.nvn.sprint_8;
 
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public class FinalA {
 
@@ -90,14 +87,21 @@ public class FinalA {
       return "";
     }
 
-    String prefix = unpack(reader.readLine());
+    String prefixStr = unpack(reader.readLine());
+    char[] prefix = prefixStr.toCharArray();
     for (int i = 1; i < n; i++) {
-      String string = unpack(reader.readLine());
-      while (!string.startsWith(prefix)) {
-        prefix = prefix.substring(0, prefix.length() - 1);
+      String stringStr = unpack(reader.readLine());
+      char[] string = stringStr.toCharArray();
+      int j;
+      for (j = 0; j < prefix.length && j < string.length; j++) {
+        if (prefix[j] != string[j]) {
+          break;
+        }
       }
+      prefix = Arrays.copyOf(prefix, j);
     }
 
-    return prefix;
+    return new String(prefix);
   }
+
 }
