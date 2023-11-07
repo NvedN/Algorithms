@@ -1,3 +1,3 @@
-# yandexAlgorithms
+# Algorithms
 
-Repository with solved tasks from the course : https://practicum.yandex.ru/algorithms/
+Repository with solved tasks from the different sources such as https://practicum.yandex.ru/algorithms/ and https://leetcode.com/problems
