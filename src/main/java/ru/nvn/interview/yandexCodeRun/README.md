@@ -1,0 +1,1 @@
+Solved task from https://coderun.yandex.ru/catalog
