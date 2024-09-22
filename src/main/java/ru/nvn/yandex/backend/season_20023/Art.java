@@ -1,4 +1,4 @@
-package ru.nvn.yandexBackend2023;
+package ru.nvn.yandex.backend.season_20023;
 import java.util.Scanner;
 public class Art {
 
