@@ -1,4 +1,4 @@
-package ru.nvn.leetcode.BigTech;
+package ru.nvn.leetcode.BigTech.common;
 
 import java.util.Stack;
 
@@ -18,7 +18,7 @@ public class P_20 {
 
         Stack<Character> stack = new Stack<>() ;
         for(int i =0; i < s.length(); i++){
-            stack.push(s)
+//            stack.push(s)
         }
         return true;
     }

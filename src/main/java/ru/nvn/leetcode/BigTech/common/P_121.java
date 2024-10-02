@@ -1,4 +1,4 @@
-package ru.nvn.leetcode.BigTech;
+package ru.nvn.leetcode.BigTech.common;
 
 public class P_121 {
 
